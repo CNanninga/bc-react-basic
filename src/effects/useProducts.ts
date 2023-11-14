@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { bcFetch } from "../utils/bigcommerceGql";
 
 const fetchProductsQuery = `
 query GetProducts($limit: Int) {
@@ -23,30 +24,15 @@ type Product = {
     id: string,
     sku: string,
     name: string,
-    defaultImage: {
+    defaultImage?: {
         url: string
     }
 }
 
-const fetchProducts:() => Promise<Product[]> = async () => {
-    const storeHash = process.env.REACT_APP_STORE_HASH;
-    const channelId = process.env.REACT_APP_CHANNEL;
-    const gqlToken = process.env.REACT_APP_GQL_TOKEN;
-
-    const result = await fetch(`https://store-${storeHash}-${channelId}.mybigcommerce.com/graphql`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${gqlToken}`
-        },
-        body: JSON.stringify({
-            query: fetchProductsQuery,
-            variables: {
-                limit: 4
-            }
-        })
-    }).then(resp => resp.json())
+const fetchProducts:(limit: number) => Promise<Product[]> = async (limit) => {
+    const result = await bcFetch<{limit: number}>(fetchProductsQuery, {
+        limit
+    })
     
     const products = result.data?.site?.products?.edges ?? [];
 
@@ -62,7 +48,7 @@ export default function useProducts(limit: number) {
 
     useEffect(() => {
         if (!loaded.current) {
-            fetchProducts().then((products: Product[]) => {
+            fetchProducts(limit).then((products: Product[]) => {
                 setProducts(products);
                 setIsLoading(false);
             })

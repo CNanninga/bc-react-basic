@@ -1,9 +1,11 @@
 import useProducts from "../effects/useProducts";
 
-export default function ProductGrid({limit}: {limit: number}) {
-    const {isLoading: productsLoading, products} = useProducts(limit);
+export default function ProductGrid(
+    {limit, setPage}: {limit: number, setPage: (type: string, id?: string) => void}
+) {
+    const {isLoading, products} = useProducts(limit);
 
-    if (productsLoading) {
+    if (isLoading) {
         return (
             <div>
                 Loading ...
@@ -14,7 +16,8 @@ export default function ProductGrid({limit}: {limit: number}) {
     return (
         <ul className="grid grid-cols-4 gap-4">
             {products.map(product => (
-                <li className="my-8" key={product.id}>
+                <li className="my-8 cursor-pointer" key={product.id}
+                    onClick={() => setPage('product', product.id)}>
                     {product.defaultImage?.url && (
                         <div className="border border-slate-700">
                             <img src={product.defaultImage.url} />
