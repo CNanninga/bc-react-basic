@@ -1,4 +1,5 @@
 import useProduct from "../effects/useProduct";
+import AddToCart from "./AddToCart";
 
 export default function ProductDetail(
     {id, setPage}: {id: string, setPage: (type: string, id?: string) => void}
@@ -28,6 +29,7 @@ export default function ProductDetail(
                 <div className="flex-1 w-1/2">
                     <h1 className="text-2xl">{product.name}</h1>
                     <p>SKU: {product.sku}</p>
+                    <AddToCart productId={product.entityId} key={product.entityId} />
                     <p className="my-8" dangerouslySetInnerHTML={{ __html: product.description}}></p>
                 </div>
             </div>

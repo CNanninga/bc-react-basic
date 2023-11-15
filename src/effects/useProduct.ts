@@ -5,6 +5,7 @@ const fetchProductQuery = `
 query GetProducts($id: ID) {
     site {
         product(id: $id) {
+            entityId
             sku
             name
             description
@@ -17,6 +18,7 @@ query GetProducts($id: ID) {
 `
 
 type ProductDetail = {
+    entityId: number,
     sku: string,
     name: string,
     description: string,
@@ -26,6 +28,7 @@ type ProductDetail = {
 }
 
 const emptyProduct:ProductDetail = {
+    entityId: 0,
     sku: '',
     name: '',
     description: '',
