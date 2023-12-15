@@ -15,6 +15,7 @@ export const bcFetch:
         body: JSON.stringify({
             query: query,
             variables: vars
-        })
+        }),
+        credentials: 'include',
     }).then(resp => resp.json())
 }
