@@ -48,13 +48,15 @@ export const CartProvider = ({children}) => {
             bcFetch<{entityId: string}>(getCartQuery, {
                 entityId: cartId,
             }).then(result => {
-                const cart = result.data?.site.cart;
+                const cartResult = result.data?.site.cart;
     
-                setCartState({
-                    id: cart.entityId ?? '',
-                    qty: cart.lineItems?.totalQuantity ?? 0,
-                    totalFormatted: cart.amount?.value ? `${cart.amount.value} ${cart.amount?.currencyCode}` : '',
-                })
+                if (cartResult) {
+                    setCartState({
+                        id: cartResult.entityId ?? '',
+                        qty: cartResult.lineItems?.totalQuantity ?? 0,
+                        totalFormatted: cartResult.amount?.value ? `${cartResult.amount.value} ${cartResult.amount?.currencyCode}` : '',
+                    });
+                }
             });
         }
     }, []);

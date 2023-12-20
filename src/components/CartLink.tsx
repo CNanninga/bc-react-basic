@@ -4,11 +4,13 @@ export default function CartLink() {
     const {cart} = useCart();
 
     return (
-        <a>
-            Cart ({cart.qty})
-            {cart.id && (
-                <span>({cart.totalFormatted})</span>
-            )}
-        </a>
+        <div>
+            <a>
+                Cart ({cart.qty})
+                {cart.id && (
+                    <span>({cart.totalFormatted})</span>
+                )}
+            </a>
+        </div>
     )
 }
